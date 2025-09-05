@@ -1,0 +1,50 @@
+package com.bank.core;
+
+public class BankAccount {
+	private int AccNo;
+	private int balance;
+	private String name;
+	private String phoneNo;
+
+	public BankAccount(int AccNo, int balance, String Name, String phoneNo) {
+		this.AccNo = AccNo;
+		this.balance = balance;
+		this.name = Name;
+		this.phoneNo = phoneNo;
+	}
+
+	public int getAccNo() {
+		return AccNo;
+	}
+
+	public void setAccNo(int accNo) {
+		AccNo = accNo;
+	}
+
+	public int getBalance() {
+		return balance;
+	}
+
+	public void setBalance(int balance) {
+		this.balance = balance;
+	}
+
+	@Override
+	public String toString() {
+		return "AccNo:" + AccNo + ", balance:" + balance + ", name:" + name + ", phoneNo:" + phoneNo b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b ;
+	}
+
+	public void withdraw(double amount) {
+		balance -= amount;
+		System.out.println("amount:₹" + amount + "is withdrawn successfully.");
+	}
+
+	public void deposit(double amount) {
+		if (amount > 0) {
+			balance += amount;
+			System.out.println("amount:₹" + amount + "is deposited successfully.");
+		} else {
+			System.out.println("Entered amount is invalid..");
+		}
+	}
+}

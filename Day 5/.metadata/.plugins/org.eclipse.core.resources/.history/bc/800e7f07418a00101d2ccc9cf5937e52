@@ -1,0 +1,28 @@
+package com.bank.core;
+
+public class SavingAccount extends BankAccount{
+	private static double interestRate;
+	
+	static {
+		interestRate=3.2;
+	}
+
+	public SavingAccount(int AccNo, int balance, String Name, String phoneNo) {
+		super(AccNo, balance, Name, phoneNo);
+		
+	}
+
+	@Override
+	public String toString() {
+		return "SavingAccount\n" + super.toString() + "interest rate:"+interestRate;
+	}
+	
+	@Override
+	public void withdraw(double amount) {
+		if((getBalance()-amount)>1000) {
+			super.withdraw(amount);
+			
+		}
+	}
+	
+}

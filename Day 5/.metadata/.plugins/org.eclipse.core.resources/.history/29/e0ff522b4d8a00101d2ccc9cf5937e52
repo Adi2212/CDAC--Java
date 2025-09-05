@@ -1,0 +1,49 @@
+package com.bank.core;
+
+public class CurrentAccount extends BankAccount {
+	private int overdraftLimit;
+	private int presentoverdraftLimit;
+
+	public CurrentAccount(int AccNo, int balance, String Name, String phoneNo, int overdraftLimit) {
+		super(AccNo, balance, Name, phoneNo);
+		this.overdraftLimit = overdraftLimit;
+		this.presentoverdraftLimit = overdraftLimit;
+
+	}
+
+	@Override
+	public String toString() {
+		return "CurrentAccount:\n" + super.toString() + "overdraftLimit=" + presentoverdraftLimit;
+	}
+
+	@Override
+	public void withdraw(double amount) {
+		if ((getBalance() > amount)) {
+			super.withdraw(amount);
+		} else if ((getBalance() - amount) > -presentoverdraftLimit) {
+			presentoverdraftLimit += (getBalance() - amount);
+			super.withdraw(amount);
+			setBalance(0);
+		} else {
+			System.out.println("Insufficient amount & overdraft limit is exceed");
+		}
+	}
+
+	@Override
+	public boolean deposit(double amount) {
+		if (overdraftLimit==presentoverdraftLimit) {
+			if(super.deposit(amount)) {
+				System.out.println("amount:₹" + amount + "is deposited successfully.");
+				return true;
+			}else
+				return false;
+			
+		}else if{
+			super.deposit(amount-(overdraftLimit-presentoverdraftLimit));
+			presentoverdraftLimit=overdraftLimit;
+			return true;
+		}else
+		
+	}
+
+}

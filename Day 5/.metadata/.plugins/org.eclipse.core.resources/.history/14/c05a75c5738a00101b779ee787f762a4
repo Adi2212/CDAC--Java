@@ -1,0 +1,30 @@
+// SavingAccount.java
+package com.bank.core;
+
+public class SavingAccount extends BankAccount {
+    private static final double INTEREST_RATE;
+
+    static {
+        INTEREST_RATE = 3.2;
+    }
+
+    public SavingAccount(int accNo, double balance, String name, String phoneNo) {
+        super(accNo, balance, name, phoneNo);
+    }
+
+    @Override
+    public String toString() {
+        return "SavingAccount:\n" + super.toString() + ", Interest Rate: " + INTEREST_RATE + "%";
+    }
+
+    @Override
+    public void withdraw(double amount) {
+        if (amount <= 0) {
+            System.out.println("Invalid withdrawal amount.");
+        } else if (getBalance() - amount >= 1000) {
+            super.withdraw(amount);
+        } else {
+            System.out.println("Insufficient balance. Minimum ₹1000 must be maintained.");
+        }
+    }
+}

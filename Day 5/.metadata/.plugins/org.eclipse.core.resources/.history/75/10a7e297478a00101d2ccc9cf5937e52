@@ -1,0 +1,81 @@
+package com.bank.tester;
+
+import java.util.Scanner;
+
+import com.bank.core.BankAccount;
+import com.bank.core.CurrentAccount;
+import com.bank.core.SavingAccount;
+
+public class TestBank {
+
+	public static void main(String[] args) {
+		Scanner sc = new Scanner(System.in);
+		System.out.println();
+		BankAccount[] customer = new BankAccount[100];
+		boolean flag = false;
+		int counter = 0;
+		while (!flag) {
+			System.out.println("1. Open Saving account\r\n" + "2. Open Current account\r\n"
+					+ "3. Display account summary\r\n" + "4. Deposit\r\n" + "5. Withdraw\r\n" + "0.Exit");
+			System.out.print("Enter your Choice:");
+			switch (sc.nextInt()) {
+			case 1:
+				System.out.println(
+						"Enter customer details for saving account (account no, balance, name, phone number:)");
+				if (counter >= 0 && counter < customer.length) {
+					customer[counter] = new SavingAccount(sc.nextInt(), sc.nextInt(), sc.next(), sc.next());
+					counter++;
+				} else {
+					System.out.println("All accounts are full ");
+					sc.nextLine();
+				}
+				break;
+			case 2:
+				System.out.println(
+						"Enter customer details for current account (account no, balance, name, phone number, overdraft limit:)");
+				if (counter >= 0 && counter < customer.length) {
+					customer[counter] = new CurrentAccount(sc.nextInt(), sc.nextInt(), sc.next(), sc.next(),
+							sc.nextInt());
+					counter++;
+				} else {
+					System.out.println("All accounts are full ");
+					sc.nextLine();
+				}
+				break;
+			case 3:
+				for (BankAccount b : customer) {
+					if (b != null) {
+						System.out.println(b);
+					} else {
+						System.out.println("Please create a account first");
+					}
+				}
+				break;
+			case 4:System.out.print("Enter account number and amount to deposit:");
+			for (BankAccount b : customer) {
+				if (b.getAccNo()==sc.nextInt() ) {
+					b.deposit(sc.nextDouble());
+				} else {
+					System.out.println("Please create a account first");
+				}
+			}
+				break;
+			case 5:
+				System.out.print("Enter account number and amount to withdraw:");
+				for (BankAccount b : customer) {
+					if (b.getAccNo()==sc.nextInt() ) {
+						b.withdraw(sc.nextDouble());
+					} else {
+						System.out.println("Please create a account first");
+					}
+				}
+				break;
+			case 0:
+				break;
+
+			}
+		}
+
+	}
+
+}
