@@ -27,23 +27,50 @@ public class TestBank {
 			// User's menu selection
 			switch (sc.nextInt()) {
 			case 1: // Open Saving Account
-				if (count < customers.length) {
-					System.out.println("Enter (AccNo Balance Name PhoneNo):");
-					customers[count++] = new SavingAccount(sc.nextInt(), sc.nextDouble(), sc.next(), sc.next());
-				} else {
-					System.out.println("Account storage full.");
-				}
-				break;
+    if (count < customers.length) {
+        
+            System.out.println("Enter (AccNo Balance Name PhoneNo):");
+            int accNo = sc.nextInt();
+            double balance = sc.nextDouble();
+            String name = sc.next();
+            String phone = sc.next();
+
+            if (findAccount(customers, accNo) != null) {
+                throw new DuplicateAccountException("Account number " + accNo + " already exists!");
+            }
+
+            customers[count++] = new SavingAccount(accNo, balance, name, phone);
+            System.out.println("Saving account created successfully!");
+
+        
+    } else {
+        System.out.println("Account storage full.");
+    }
+    break;
+
 
 			case 2: // Open Current Account
-				if (count < customers.length) {
-					System.out.println("Enter (AccNo Balance Name PhoneNo OverdraftLimit):");
-					customers[count++] = new CurrentAccount(sc.nextInt(), sc.nextDouble(), sc.next(), sc.next(),
-							sc.nextDouble());
-				} else {
-					System.out.println("Account storage full.");
-				}
-				break;
+    if (count < customers.length) {
+        
+            System.out.println("Enter (AccNo Balance Name PhoneNo OverdraftLimit):");
+            int accNo = sc.nextInt();
+            double balance = sc.nextDouble();
+            String name = sc.next();
+            String phone = sc.next();
+            double overdraft = sc.nextDouble();
+
+            if (findAccount(customers, accNo) != null) {
+                throw new DuplicateAccountException("Account number " + accNo + " already exists!");
+            }
+
+            customers[count++] = new CurrentAccount(accNo, balance, name, phone, overdraft);
+            System.out.println("Current account created successfully!");
+
+    } else {
+        System.out.println("Account storage full.");
+    }
+    break;
+
 
 			case 3: // Display all accounts (both Saving & Current)
 				for (BankAccount acc : customers) {
