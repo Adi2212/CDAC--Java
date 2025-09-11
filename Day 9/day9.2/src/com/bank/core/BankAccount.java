@@ -46,7 +46,7 @@ public class BankAccount {
     }
 @Override
     public boolean equals(Object otherAcc) {
-	return this.getAccNo()==((BankAccount)otherAcc).getAccNo();
+	return this.accNo==((BankAccount)otherAcc).accNo;
     }
     public boolean deposit(double amount) throws InvalidAmountException {
         if (amount <= 0) {
