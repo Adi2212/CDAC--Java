@@ -1,0 +1,203 @@
+package com.bank.tester;
+
+import java.util.Scanner;
+
+import com.bank.core.BankAccount;
+import com.bank.core.CurrentAccount;
+import com.bank.core.SavingAccount;
+import com.bank.exception.AccountNotFoundException;
+import com.bank.exception.DuplicateAccountException;
+import com.bank.exception.InvalidAmountException;
+import com.bank.validation.BankValidations;
+
+public class TestBank {
+
+	public static void main(String[] args) {
+		Scanner sc = new Scanner(System.in);
+		BankAccount[] customers = new BankAccount[100]; // Array to store up to 100 accounts
+		int count = 0; // Tracks how many accounts are created
+
+		// Infinite loop until user chooses to exit
+		while (true) {
+			// ===== Display Menu =====
+			System.out.println("\n=== Banking System Menu ===" + "\n1. Open Saving Account"
+					+ "\n2. Open Current Account" + "\n3. Display All Accounts" + "\n4. Deposit" + "\n5. Withdraw"
+					+ "\n6. Search Specific Account" + "\n7. Display Accounts by Type" + "\n8. Apply Interest to All"
+					+ "\n9. Update Overdraft Limit for Current Account" + "\n0. Exit");
+			System.out.print("Enter your choice: ");
+			try {
+				// User's menu selection
+				switch (sc.nextInt()) {
+				case 1: // Open Saving Account
+					if (count < customers.length) {
+
+						System.out.print("Enter (AccNo Balance Name PhoneNo):");
+//						int accNo = sc.nextInt();
+//						double balance = sc.nextDouble();
+//						String name = sc.next();
+//						String phone = sc.next();
+
+						BankAccount newAcc = new CurrentAccount(sc.nextInt(), sc.nextDouble(), sc.next(), sc.next());
+						if (count != 0) {
+							for (BankAccount acc : customers) {
+								if (acc != null)
+									BankValidations.validAccountNo(acc, newAcc);							}
+						}
+						customers[count++] = newAcc;
+						System.out.println("Saving account created successfully!");
+
+					} else {
+						System.out.println("Account storage full.");
+					}
+					break;
+
+				case 2: // Open Current Account
+					if (count < customers.length) {
+
+						System.out.print("Enter (AccNo Balance Name PhoneNo):");
+//						int accNo = sc.nextInt();
+//						double balance = sc.nextDouble();
+//						String name = sc.next();
+//						String phone = sc.next();
+
+						BankAccount newAcc = new CurrentAccount(sc.nextInt(), sc.nextDouble(), sc.next(), sc.next(),
+								sc.nextDouble());
+						if (count != 0) {
+							for (BankAccount acc : customers) {
+								if (acc != null)
+									BankValidations.validAccountNo(acc, newAcc);							}
+						}
+						customers[count++] = newAcc;
+						System.out.println("Current account created successfully!");
+
+					} else {
+						System.out.println("Account storage full.");
+					}
+					break;
+
+				case 3: // Display all accounts (both Saving & Current)
+					for (BankAccount acc : customers) {
+						if (acc != null) {
+							System.out.println(acc);
+						}
+					}
+					break;
+
+				case 4:
+					System.out.print("Enter AccNo and Amount to Deposit: ");
+					int depAcc = sc.nextInt();
+					double depAmt = sc.nextDouble();
+					try {
+						BankAccount depositAcc = findAccount(customers, depAcc);
+						if (depositAcc == null) {
+							throw new AccountNotFoundException("Account number " + depAcc + " not found.");
+						}
+						depositAcc.deposit(depAmt);
+					} catch (Exception e) {
+						System.out.println("Error: " + e.getMessage());
+					}
+					break;
+
+				// Example in withdraw case:
+				case 5:
+					System.out.print("Enter AccNo and Amount to Withdraw: ");
+					int withAcc = sc.nextInt();
+					double withAmt = sc.nextDouble();
+
+					BankAccount withdrawAcc = findAccount(customers, withAcc);
+					if (withdrawAcc == null) {
+						throw new AccountNotFoundException("Account number " + withAcc + " not found.");
+					}
+					withdrawAcc.withdraw(withAmt);
+					break;
+
+				case 6: // Search for a specific account by account number
+					System.out.print("Enter Account Number to Search: ");
+					int searchAcc = sc.nextInt();
+					BankAccount acc = findAccount(customers, searchAcc);
+					if (acc != null) {
+						System.out.println("Account Found: " + acc);
+					} else {
+						System.out.println("Account not found.");
+					}
+					break;
+
+				case 7: // Display accounts by type (Saving or Current)
+					System.out.println("Enter Account Type (1. Saving, 2. Current): ");
+					int typeChoice = sc.nextInt();
+					boolean found = false;
+
+					for (BankAccount b : customers) {
+						if (b != null) {
+							if (typeChoice == 1 && b instanceof SavingAccount) {
+								System.out.println(b);
+								found = true;
+							} else if (typeChoice == 2 && b instanceof CurrentAccount) {
+								System.out.println(b);
+								found = true;
+							}
+						}
+					}
+
+					if (!found) {
+						System.out.println("No accounts of this type found.");
+					}
+					break;
+
+				case 8: // Apply interest to all Saving Accounts
+					boolean interestApplied = false;
+					for (BankAccount b : customers) {
+						if (b instanceof SavingAccount) {
+							((SavingAccount) b).applyInterest();
+							interestApplied = true;
+						}
+					}
+					if (!interestApplied) {
+						System.out.println("No Saving Accounts found to apply interest.");
+					}
+					break;
+
+				case 9: // Update overdraft limit
+					System.out.print("Enter Account Number and New Overdraft Limit: ");
+					int odAcc = sc.nextInt();
+					double newLimit = sc.nextDouble();
+
+					BankAccount odAccount = findAccount(customers, odAcc);
+
+					if (odAccount == null) {
+						throw new AccountNotFoundException("Account number " + odAcc + " not found.");
+					}
+					if (!(odAccount instanceof CurrentAccount)) {
+						throw new InvalidAmountException("Account " + odAcc + " is not a Current Account.");
+					}
+
+					((CurrentAccount) odAccount).updateOverdraftLimit(newLimit);
+					System.out.println("Overdraft limit updated successfully!");
+
+					break;
+
+				case 0: // Exit the program
+					System.out.println("Exiting... Thank you!");
+					sc.close(); // Close scanner before exiting
+					return; // Ends main(), which terminates the program
+
+				default: // Handles invalid input
+					System.out.println("Invalid choice. Try again.");
+				}
+			} catch (Exception e) {
+				System.out.println("Error: " + e.getMessage());
+				e.printStackTrace();
+			}
+		}
+	}
+
+	// Helper method to find an account by account number.
+	private static BankAccount findAccount(BankAccount[] customers, int accNo) {
+		for (BankAccount acc : customers) {
+			if (acc != null && acc.getAccNo() == accNo) {
+				return acc;
+			}
+		}
+		return null;
+	}
+}
