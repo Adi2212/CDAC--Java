@@ -35,8 +35,6 @@ public class TestBank {
 
 					case 2:
 						System.out.print("Enter accNo, balance, name, phone, overdraftLimit: ");
-						service.openCurrentAccount(sc.nextInt(), sc.nextDouble(), sc.next(), sc.next(),
-								sc.nextDouble());
 						System.out.println(service.openCurrentAccount(sc.nextInt(), sc.nextDouble(), sc.next(),
 								sc.next(), sc.nextDouble()));
 						break;
