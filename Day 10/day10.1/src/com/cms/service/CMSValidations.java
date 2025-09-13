@@ -22,8 +22,9 @@ public class CMSValidations {
 			String lastName, String email, String password,
 			int regAmount, String dob, String plan, 
 			Customer[] customers) throws CMSHandlingException {
+		validateEmail(email);
 		checkForDuplicate(email, customers);
-		
+		validatePlan(plan);
 		
 		return new Customer(firstName, lastName, email, 
 				password, regAmount,
@@ -46,6 +47,15 @@ public class CMSValidations {
 		if(!email.matches(EMAIL_PATTERN)) {
 			throw new CMSHandlingException("Invalid Email...");
 		}
+	}
+	
+	public static ServicePlan validatePlan(String plan) throws CMSHandlingException {
+		for(ServicePlan sp : ServicePlan.values()) {
+			if (sp.name().equals(plan)) {
+				return sp;
+			}
+		}
+		throw new CMSHandlingException("Invalid plan. Choose from SILVER, GOLD, DIAMOND, PLATINUM");
 	}
 	
 	 
