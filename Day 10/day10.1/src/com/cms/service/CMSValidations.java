@@ -49,7 +49,7 @@ public class CMSValidations {
 		}
 	}
 	
-public static void validateRegAmount(ServicePlan plan, double regAmount) throws CMSHandlingException {
+public static void validateRegAmount(ServicePlan plan, int regAmount) throws CMSHandlingException {
         if (plan.getplanCost() != regAmount)
             throw new CMSHandlingException("Registration amount must match plan charges!");
     }
