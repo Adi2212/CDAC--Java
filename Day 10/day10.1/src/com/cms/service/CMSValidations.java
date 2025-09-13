@@ -24,11 +24,11 @@ public class CMSValidations {
 			Customer[] customers) throws CMSHandlingException {
 		validateEmail(email);
 		checkForDuplicate(email, customers);
-		validatePlan(plan);
-		
+		ServicePlan choosenPlan = validatePlan(plan);
+		validateRegAmount(choosenPlan, regAmount);
 		return new Customer(firstName, lastName, email, 
 				password, regAmount,
-				LocalDate.parse(dob) ,ServicePlan.valueOf(plan));
+				LocalDate.parse(dob) ,choosenPlan);
 	}
 
 	// add a static method to check for dup
@@ -49,6 +49,11 @@ public class CMSValidations {
 		}
 	}
 	
+public static void validateRegAmount(ServicePlan plan, double regAmount) throws CMSHandlingException {
+        if (plan.getplanCost() != regAmount)
+            throw new CMSHandlingException("Registration amount must match plan charges!");
+    }
+
 	public static ServicePlan validatePlan(String plan) throws CMSHandlingException {
 		for(ServicePlan sp : ServicePlan.values()) {
 			if (sp.name().equals(plan)) {
